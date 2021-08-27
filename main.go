@@ -42,7 +42,7 @@ func main() {
 			return
 		}
 
-		w.WriteString("[]DOMAIN-SUFFIX," + string(domain) + "\n")
+		w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 	}
 
 }
