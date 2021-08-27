@@ -32,7 +32,7 @@ jobs:
           touch release.txt
           echo "::set-output name=status::success"        
 
-      - name: Upload firmware to release
+      - name: Upload release
         uses: softprops/action-gh-release@v1
         if: steps.tag.outputs.status == 'success' && !cancelled()
         env:
@@ -40,7 +40,7 @@ jobs:
         with:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*
+          files: output/*
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
