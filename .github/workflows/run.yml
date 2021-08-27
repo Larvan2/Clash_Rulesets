@@ -1,5 +1,8 @@
 name: Convert domaintxt to list
 on:
+  push:
+    branch:
+      - main
   workflow_dispatch:
   schedule:
     - cron: "0 20 * * *"
