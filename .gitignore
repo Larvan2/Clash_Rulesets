@@ -19,3 +19,6 @@
 
 .vscode/*
 .vscode/
+
+output/*
+output/
