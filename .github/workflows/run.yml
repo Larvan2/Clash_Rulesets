@@ -21,7 +21,7 @@ jobs:
 
       - name: Get project dependencies & run
         run: |
-          go run main.go
+          go run .
 
       - name: upload
         uses: actions/upload-artifact@v2
