@@ -1,5 +1,5 @@
 # Clash_Rulesets
-提供了 Clash 订阅转换时使用的 list 文件，数据来源：[v2ray-rules-dat
+提供了 Clash 订阅转换时使用的规则文件，数据来源：[v2ray-rules-dat
 ](https://github.com/Loyalsoldier/v2ray-rules-dat)
 
 国内无法访问的列表:  
