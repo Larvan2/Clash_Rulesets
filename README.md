@@ -4,6 +4,7 @@
 
 国内无法访问的列表:  
 `https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/cnblock.list`
-
+`https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/cnblock.txt`
 国内可以直接直连的列表:  
 `https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/direct.list`
+`https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/direct.txt`
