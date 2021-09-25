@@ -19,6 +19,7 @@
 
 .vscode/*
 .vscode/
-
+.idea/
+.idea/*
 output/*
 output/

@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func Convertdirect() {
+func downloadDirectList() {
 	DirectUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"
 	resp, err := http.Get(DirectUrl)
 	if err != nil {
@@ -23,6 +23,9 @@ func Convertdirect() {
 		panic(err)
 	}
 	ioutil.WriteFile("direct.txt", data, 0644)
+}
+func convertDirectList() {
+
 	directDomainlist, err := os.Open("direct.txt")
 	if err != nil {
 		fmt.Println(err)
@@ -45,5 +48,28 @@ func Convertdirect() {
 			continue
 		}
 		w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
+	}
+}
+func convertDirectTxt() {
+	directDomainlist, err := os.Open("direct.txt")
+
+	if err != nil {
+		fmt.Println(err)
+		return // exit the function on error
+	}
+	output, _ := os.Create("output/direct.txt")
+	defer output.Close()
+
+	inputReader := bufio.NewReader(directDomainlist)
+	w := bufio.NewWriter(output)
+	for {
+		domain, _, err := inputReader.ReadLine()
+		if err == io.EOF {
+			return
+		}
+		if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+			continue
+		}
+		w.WriteString(string(domain) + "\n")
 	}
 }

@@ -1,6 +1,10 @@
 package main
 
 func main() {
-	Convertblocked()
-	Convertdirect()
+	downloadBlockList()
+	downloadDirectList()
+	convertBlockedList()
+	convertDirectList()
+	convertBlockedTxt()
+	convertDirectTxt()
 }
