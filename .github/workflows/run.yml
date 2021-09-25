@@ -1,8 +1,8 @@
 name: Convert domaintxt to list
 on:
-  push:
-    branch:
-      - main
+#   push:
+#     branch:
+#       - main
   workflow_dispatch:
   schedule:
     - cron: "0 20 * * *"
@@ -22,6 +22,12 @@ jobs:
       - name: Get project dependencies & run
         run: |
           go run .
+          
+#       - name: Generate txt file
+#         run: |
+#           cd output
+#           cp direct.list direct.txt
+#           cp cnblock.list cnblock.txt
 
       - name: upload
         uses: actions/upload-artifact@v2
