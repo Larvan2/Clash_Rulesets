@@ -23,11 +23,11 @@ jobs:
         run: |
           go run .
           
-      - name: Generate txt file
-        run: |
-          cd output
-          cp direct.list direct.txt
-          cp cnblock.list cnblock.txt
+#       - name: Generate txt file
+#         run: |
+#           cd output
+#           cp direct.list direct.txt
+#           cp cnblock.list cnblock.txt
 
       - name: upload
         uses: actions/upload-artifact@v2
