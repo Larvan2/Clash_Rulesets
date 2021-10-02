@@ -39,13 +39,13 @@ func convertDirectList() {
 
 	inputReader := bufio.NewReader(directDomainlist)
 	w := bufio.NewWriter(output)
-	for {
+	LOOP: for {
 		domain, _, err := inputReader.ReadLine()
 		if err == io.EOF {
 			return
 		}
 		if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
-			continue
+			goto LOOP
 		}
 		w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 	}
@@ -62,13 +62,13 @@ func convertDirectTxt() {
 
 	inputReader := bufio.NewReader(directDomainlist)
 	w := bufio.NewWriter(output)
-	for {
+	LOOP: for {
 		domain, _, err := inputReader.ReadLine()
 		if err == io.EOF {
 			return
 		}
 		if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
-			continue
+			goto LOOP
 		}
 		w.WriteString(string(domain) + "\n")
 	}
