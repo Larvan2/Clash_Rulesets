@@ -3,10 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func downloadBlockList() {
@@ -34,17 +34,29 @@ func convertBlockedList() {
 	output, _ := os.Create("output/cnblock.list")
 	defer output.Close()
 
-	inputReader := bufio.NewReader(blockedDomainlist)
+	r := bufio.NewReader(blockedDomainlist)
 	w := bufio.NewWriter(output)
+	// for {
+	// 	domain, _, err := inputReader.ReadLine()
+	// 	if err == io.EOF {
+	// 		return
+	// 	}
+
+	// 	w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
+	// }
+
 	for {
-		domain, _, err := inputReader.ReadLine()
-		if err == io.EOF {
-			return
+		if domain, _, err := r.ReadLine(); err == nil {
+			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+				continue
+			} else {
+				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
+			}
+		} else {
+			break
 		}
-
-		w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 	}
-
+	w.Flush()
 }
 
 func convertBlockedTxt() {
@@ -58,14 +70,26 @@ func convertBlockedTxt() {
 	output, _ := os.Create("output/cnblock.txt")
 	defer output.Close()
 
-	inputReader := bufio.NewReader(blockedDomainlist)
+	r := bufio.NewReader(blockedDomainlist)
 	w := bufio.NewWriter(output)
-	for {
-		domain, _, err := inputReader.ReadLine()
-		if err == io.EOF {
-			return
-		}
+	// for {
+	// 	domain, _, err := inputReader.ReadLine()
+	// 	if err == io.EOF {
+	// 		return
+	// 	}
 
-		w.WriteString(string(domain) + "\n")
+	// 	w.WriteString(string(domain) + "\n")
+	// }
+	for {
+		if domain, _, err := r.ReadLine(); err == nil {
+			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+				continue
+			} else {
+				w.WriteString(string(domain) + "\n")
+			}
+		} else {
+			break
+		}
 	}
+	w.Flush()
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -33,22 +32,25 @@ func convertDirectList() {
 	}
 	defer directDomainlist.Close()
 
-	os.Mkdir("output", 0755)
+	os.Mkdir("output", 0777)
 	output, _ := os.Create("output/direct.list")
 	defer output.Close()
 
-	inputReader := bufio.NewReader(directDomainlist)
+	r := bufio.NewReader(directDomainlist)
 	w := bufio.NewWriter(output)
-	LOOP: for {
-		domain, _, err := inputReader.ReadLine()
-		if err == io.EOF {
-			return
+
+	for {
+		if domain, _, err := r.ReadLine(); err == nil {
+			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+				continue
+			} else {
+				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
+			}
+		} else {
+			break
 		}
-		if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
-			goto LOOP
-		}
-		w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 	}
+	w.Flush()
 }
 func convertDirectTxt() {
 	directDomainlist, err := os.Open("direct.txt")
@@ -60,16 +62,18 @@ func convertDirectTxt() {
 	output, _ := os.Create("output/direct.txt")
 	defer output.Close()
 
-	inputReader := bufio.NewReader(directDomainlist)
+	r := bufio.NewReader(directDomainlist)
 	w := bufio.NewWriter(output)
-	LOOP: for {
-		domain, _, err := inputReader.ReadLine()
-		if err == io.EOF {
-			return
+	for {
+		if domain, _, err := r.ReadLine(); err == nil {
+			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+				continue
+			} else {
+				w.WriteString(string(domain) + "\n")
+			}
+		} else {
+			break
 		}
-		if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
-			goto LOOP
-		}
-		w.WriteString(string(domain) + "\n")
 	}
+	w.Flush()
 }
