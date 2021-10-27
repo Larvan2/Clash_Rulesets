@@ -10,7 +10,7 @@ import (
 )
 
 func downloadBlockList() {
-	CNBlockedUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/cn-blocked-domain@release/domains.txt"
+	CNBlockedUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/proxy-list.txt"
 	resp, err := http.Get(CNBlockedUrl)
 	if err != nil {
 		panic(err)
@@ -24,26 +24,18 @@ func downloadBlockList() {
 }
 func convertBlockedList() {
 
-	blockedDomainlist, err := os.Open("block.txt")
+	proxyDomainlist, err := os.Open("block.txt")
 	if err != nil {
 		fmt.Println(err)
 		return // exit the function on error
 	}
 
 	os.Mkdir("output", 0755)
-	output, _ := os.Create("output/cnblock.list")
+	output, _ := os.Create("output/proxy.list")
 	defer output.Close()
 
-	r := bufio.NewReader(blockedDomainlist)
+	r := bufio.NewReader(proxyDomainlist)
 	w := bufio.NewWriter(output)
-	// for {
-	// 	domain, _, err := inputReader.ReadLine()
-	// 	if err == io.EOF {
-	// 		return
-	// 	}
-
-	// 	w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
-	// }
 
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
@@ -57,35 +49,29 @@ func convertBlockedList() {
 		}
 	}
 	w.Flush()
+
 }
 
 func convertBlockedTxt() {
 
-	blockedDomainlist, err := os.Open("block.txt")
+	proxyDomainList, err := os.Open("block.txt")
 	if err != nil {
 		fmt.Println(err)
 		return // exit the function on error
 	}
 	os.Mkdir("output", 0755)
-	output, _ := os.Create("output/cnblock.txt")
+	output, _ := os.Create("output/proxy.txt")
 	defer output.Close()
 
-	r := bufio.NewReader(blockedDomainlist)
+	r := bufio.NewReader(proxyDomainList)
 	w := bufio.NewWriter(output)
-	// for {
-	// 	domain, _, err := inputReader.ReadLine()
-	// 	if err == io.EOF {
-	// 		return
-	// 	}
 
-	// 	w.WriteString(string(domain) + "\n")
-	// }
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
 			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
 				continue
 			} else {
-				w.WriteString(string(domain) + "\n")
+				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 			}
 		} else {
 			break
