@@ -23,12 +23,12 @@ func downloadDirectList() {
 	}
 	ioutil.WriteFile("direct.txt", data, 0644)
 }
+
 func convertDirectList() {
 
 	directDomainlist, err := os.Open("direct.txt")
 	if err != nil {
 		fmt.Println(err)
-		return // exit the function on error
 	}
 	defer directDomainlist.Close()
 
@@ -50,14 +50,16 @@ func convertDirectList() {
 			break
 		}
 	}
-	w.Flush()
+	if err = w.Flush(); err != nil {
+		fmt.Println(err)
+	}
 }
+
 func convertDirectTxt() {
 	directDomainlist, err := os.Open("direct.txt")
 
 	if err != nil {
 		fmt.Println(err)
-		return // exit the function on error
 	}
 	output, _ := os.Create("output/direct.txt")
 	defer output.Close()
@@ -75,5 +77,7 @@ func convertDirectTxt() {
 			break
 		}
 	}
-	w.Flush()
+	if err = w.Flush(); err != nil {
+		fmt.Println(err)
+	}
 }

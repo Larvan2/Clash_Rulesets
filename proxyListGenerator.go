@@ -15,7 +15,9 @@ func downloadBlockList() {
 	if err != nil {
 		panic(err)
 	}
+
 	defer resp.Body.Close()
+
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
@@ -23,15 +25,13 @@ func downloadBlockList() {
 	ioutil.WriteFile("block.txt", data, 0644)
 }
 func convertBlockedList() {
-
 	proxyDomainlist, err := os.Open("block.txt")
 	if err != nil {
 		fmt.Println(err)
-		return // exit the function on error
 	}
-
 	os.Mkdir("output", 0755)
 	output, _ := os.Create("output/proxy.list")
+
 	defer output.Close()
 
 	r := bufio.NewReader(proxyDomainlist)
@@ -48,19 +48,20 @@ func convertBlockedList() {
 			break
 		}
 	}
-	w.Flush()
+	if err = w.Flush(); err != nil {
+		fmt.Println(err)
+	}
 
 }
 
 func convertBlockedTxt() {
-
 	proxyDomainList, err := os.Open("block.txt")
 	if err != nil {
 		fmt.Println(err)
-		return // exit the function on error
 	}
 	os.Mkdir("output", 0755)
 	output, _ := os.Create("output/proxy.txt")
+
 	defer output.Close()
 
 	r := bufio.NewReader(proxyDomainList)
@@ -77,5 +78,7 @@ func convertBlockedTxt() {
 			break
 		}
 	}
-	w.Flush()
+	if err = w.Flush(); err != nil {
+		fmt.Println(err)
+	}
 }
