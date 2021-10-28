@@ -10,7 +10,7 @@ import (
 )
 
 func downloadDirectList() {
-	DirectUrl := "https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt"
+	DirectUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"
 	resp, err := http.Get(DirectUrl)
 	if err != nil {
 		panic(err)
