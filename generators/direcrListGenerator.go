@@ -1,4 +1,4 @@
-package main
+package generators
 
 import (
 	"bufio"
@@ -9,32 +9,34 @@ import (
 	"strings"
 )
 
-func downloadBlockList() {
-	CNBlockedUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/proxy-list.txt"
-	resp, err := http.Get(CNBlockedUrl)
+func DownloadDirectList() {
+	DirectUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"
+	resp, err := http.Get(DirectUrl)
 	if err != nil {
 		panic(err)
 	}
-
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
 	}
-	ioutil.WriteFile("block.txt", data, 0644)
+	ioutil.WriteFile("direct.txt", data, 0644)
 }
-func convertBlockedList() {
-	proxyDomainlist, err := os.Open("block.txt")
+
+func ConvertDirectList() {
+
+	directDomainlist, err := os.Open("direct.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
-	os.Mkdir("output", 0755)
-	output, _ := os.Create("output/proxy.list")
+	defer directDomainlist.Close()
 
+	os.Mkdir("output", 0777)
+	output, _ := os.Create("output/direct.list")
 	defer output.Close()
 
-	r := bufio.NewReader(proxyDomainlist)
+	r := bufio.NewReader(directDomainlist)
 	w := bufio.NewWriter(output)
 
 	for {
@@ -51,28 +53,25 @@ func convertBlockedList() {
 	if err = w.Flush(); err != nil {
 		fmt.Println(err)
 	}
-
 }
 
-func convertBlockedTxt() {
-	proxyDomainList, err := os.Open("block.txt")
+func ConvertDirectTxt() {
+	directDomainlist, err := os.Open("direct.txt")
+
 	if err != nil {
 		fmt.Println(err)
 	}
-	os.Mkdir("output", 0755)
-	output, _ := os.Create("output/proxy.txt")
-
+	output, _ := os.Create("output/direct.txt")
 	defer output.Close()
 
-	r := bufio.NewReader(proxyDomainList)
+	r := bufio.NewReader(directDomainlist)
 	w := bufio.NewWriter(output)
-
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
 			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
 				continue
 			} else {
-				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
+				w.WriteString(string(domain) + "\n")
 			}
 		} else {
 			break

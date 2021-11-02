@@ -1,4 +1,4 @@
-package main
+package generators
 
 import (
 	"bufio"
@@ -9,34 +9,32 @@ import (
 	"strings"
 )
 
-func downloadDirectList() {
-	DirectUrl := "https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt"
-	resp, err := http.Get(DirectUrl)
+func DownloadBlockList() {
+	CNBlockedUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/proxy-list.txt"
+	resp, err := http.Get(CNBlockedUrl)
 	if err != nil {
 		panic(err)
 	}
+
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
 	}
-	ioutil.WriteFile("direct.txt", data, 0644)
+	ioutil.WriteFile("block.txt", data, 0644)
 }
-
-func convertDirectList() {
-
-	directDomainlist, err := os.Open("direct.txt")
+func ConvertBlockedList() {
+	proxyDomainlist, err := os.Open("block.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer directDomainlist.Close()
+	os.Mkdir("output", 0755)
+	output, _ := os.Create("output/proxy.list")
 
-	os.Mkdir("output", 0777)
-	output, _ := os.Create("output/direct.list")
 	defer output.Close()
 
-	r := bufio.NewReader(directDomainlist)
+	r := bufio.NewReader(proxyDomainlist)
 	w := bufio.NewWriter(output)
 
 	for {
@@ -53,25 +51,28 @@ func convertDirectList() {
 	if err = w.Flush(); err != nil {
 		fmt.Println(err)
 	}
+
 }
 
-func convertDirectTxt() {
-	directDomainlist, err := os.Open("direct.txt")
-
+func ConvertBlockedTxt() {
+	proxyDomainList, err := os.Open("block.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
-	output, _ := os.Create("output/direct.txt")
+	os.Mkdir("output", 0755)
+	output, _ := os.Create("output/proxy.txt")
+
 	defer output.Close()
 
-	r := bufio.NewReader(directDomainlist)
+	r := bufio.NewReader(proxyDomainList)
 	w := bufio.NewWriter(output)
+
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
 			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
 				continue
 			} else {
-				w.WriteString(string(domain) + "\n")
+				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 			}
 		} else {
 			break
