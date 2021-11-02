@@ -21,7 +21,7 @@ jobs:
 
       - name: Get project dependencies & run
         run: |
-          go run .
+          go run main.go
           
 #       - name: Generate txt file
 #         run: |
