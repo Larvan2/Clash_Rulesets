@@ -8,3 +8,5 @@
 * List: https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/direct.list 
 * Txt: https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/direct.txt
   
+## Quantumult 分流：
+* https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/Quantumult.conf
