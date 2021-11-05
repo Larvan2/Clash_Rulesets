@@ -3,26 +3,9 @@ package generators
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"os"
 	"strings"
 )
-
-func DownloadDirectList() {
-	DirectUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"
-	resp, err := http.Get(DirectUrl)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-	ioutil.WriteFile("direct.txt", data, 0644)
-}
 
 func ConvertDirectList() {
 
@@ -41,8 +24,10 @@ func ConvertDirectList() {
 
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
-			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+			if strings.Contains(string(domain), "regexp:") {
 				continue
+			} else if strings.Contains(string(domain), "full:") {
+				w.WriteString(strings.Replace(string(domain), "full:", "DOMAIN,", 1) + "\n")
 			} else {
 				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 			}
@@ -68,8 +53,10 @@ func ConvertDirectTxt() {
 	w := bufio.NewWriter(output)
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
-			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+			if strings.Contains(string(domain), "regexp:") {
 				continue
+			} else if strings.Contains(string(domain), "full:") {
+				w.WriteString(strings.Replace(string(domain), "full:", "", 1) + "\n")
 			} else {
 				w.WriteString(string(domain) + "\n")
 			}
@@ -80,43 +67,4 @@ func ConvertDirectTxt() {
 	if err = w.Flush(); err != nil {
 		fmt.Println(err)
 	}
-}
-
-func ConvertDirectList_Quantumult() {
-
-	directDomainlist, err := os.Open("direct.txt")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer directDomainlist.Close()
-
-	os.Mkdir("output", 0777)
-	output, _ := os.Create("output/Quantumult.conf")
-	defer output.Close()
-
-	r := bufio.NewReader(directDomainlist)
-	w := bufio.NewWriter(output)
-
-	w.WriteString("[SERVER]" + "\n" + "\n")
-	w.WriteString("[SOURCE]" + "\n" +
-		"N1klaz Rules, filter, https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/Quantumult.conf, true" + "\n")
-
-	for {
-		if domain, _, err := r.ReadLine(); err == nil {
-			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
-				continue
-			} else {
-				w.WriteString("HOST-SUFFIX," + string(domain) + ",direct" + "\n")
-			}
-		} else {
-			break
-		}
-	}
-	w.WriteString("GEOIP,CN,DIRECT" + "\n\n" + "FINAL,PROXY" + "\n" + "[GLOBAL]" + "\n\n" + "[HOST]" + "\n\n" + "[STATE]" + "\n" +
-		"STATE,AUTO" + "\n\n" + "[MITM]" + "\n")
-
-	if err = w.Flush(); err != nil {
-		fmt.Println(err)
-	}
-
 }

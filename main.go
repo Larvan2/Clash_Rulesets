@@ -7,6 +7,7 @@ import (
 func main() {
 	generators.DownloadBlockList()
 	generators.DownloadDirectList()
+	generators.DownloadAppleCNList()
 	generators.ConvertBlockedList()
 	generators.ConvertBlockedTxt()
 	generators.ConvertDirectList()
