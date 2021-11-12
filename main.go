@@ -11,10 +11,5 @@ func main() {
 	generators.ConvertBlockedTxt()
 	generators.ConvertDirectList()
 	generators.ConvertDirectTxt()
-	// downloadBlockList()
-	// downloadDirectList()
-	// convertBlockedList()
-	// convertDirectList()
-	// convertBlockedTxt()
-	// convertDirectTxt()
+
 }
