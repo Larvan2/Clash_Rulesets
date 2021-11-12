@@ -42,8 +42,10 @@ func ConvertDirectList() {
 
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
-			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+			if strings.Contains(string(domain), "regexp:") {
 				continue
+			} else if strings.Contains(string(domain), "full:") {
+				w.WriteString(strings.Replace(string(domain), "full:", "DOMAIN,", 1) + "\n")
 			} else {
 				w.WriteString("DOMAIN-SUFFIX," + string(domain) + "\n")
 			}
@@ -69,8 +71,10 @@ func ConvertDirectTxt() {
 	w := bufio.NewWriter(output)
 	for {
 		if domain, _, err := r.ReadLine(); err == nil {
-			if strings.Contains(string(domain), "full:") || strings.Contains(string(domain), "regexp:") {
+			if strings.Contains(string(domain), "regexp:") {
 				continue
+			} else if strings.Contains(string(domain), "full:") {
+				w.WriteString(strings.Replace(string(domain), "full:", "", 1) + "\n")
 			} else {
 				w.WriteString(string(domain) + "\n")
 			}
