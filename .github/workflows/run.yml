@@ -23,11 +23,6 @@ jobs:
         run: |
           go run main.go
           
-#       - name: Generate txt file
-#         run: |
-#           cd output
-#           cp direct.list direct.txt
-#           cp cnblock.list cnblock.txt
 
       - name: upload
         uses: actions/upload-artifact@v2
@@ -50,6 +45,31 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: output/*
+
+      # - name: Push to release branch
+      #   run: |
+      #     cd publish
+      #     git init
+      #     git config --local user.name "${{ github.actor }}"
+      #     git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+      #     git checkout -b release
+      #     git add .
+      #     git commit -m "${{ env.RELEASE_NAME }}"
+      #     git remote add origin "https://${{ github.actor }}:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }}"
+      #     git push -f -u origin release
+      #     cp -af lite/Country.mmdb Country-lite.mmdb
+
+      - name: Git push assets to "release" branch
+        run: |
+          cd output || exit 1
+          git init
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b release
+          git add .
+          git commit -m "${{ env.RELEASE_NAME }}"
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git push -f -u origin release
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
