@@ -46,19 +46,6 @@ jobs:
           body_path: release.txt
           files: output/*
 
-      # - name: Push to release branch
-      #   run: |
-      #     cd publish
-      #     git init
-      #     git config --local user.name "${{ github.actor }}"
-      #     git config --local user.email "${{ github.actor }}@users.noreply.github.com"
-      #     git checkout -b release
-      #     git add .
-      #     git commit -m "${{ env.RELEASE_NAME }}"
-      #     git remote add origin "https://${{ github.actor }}:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }}"
-      #     git push -f -u origin release
-      #     cp -af lite/Country.mmdb Country-lite.mmdb
-
       - name: Git push assets to "release" branch
         run: |
           cd output || exit 1
@@ -75,12 +62,12 @@ jobs:
         uses: GitRML/delete-workflow-runs@main
         with:
           retain_days: 1
-          keep_minimum_runs: 2
+          keep_minimum_runs: 3
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.1.0
         with:
-          keep_latest: 2
+          keep_latest: 3
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
