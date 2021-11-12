@@ -3,27 +3,10 @@ package generators
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"os"
 	"strings"
 )
 
-func DownloadBlockList() {
-	CNBlockedUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/proxy-list.txt"
-	resp, err := http.Get(CNBlockedUrl)
-	if err != nil {
-		panic(err)
-	}
-
-	defer resp.Body.Close()
-
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-	ioutil.WriteFile("block.txt", data, 0644)
-}
 func ConvertBlockedList() {
 	proxyDomainlist, err := os.Open("block.txt")
 	if err != nil {

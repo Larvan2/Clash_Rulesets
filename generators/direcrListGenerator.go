@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
-func DownloadDirectList() {
-	DirectUrl := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"
-	resp, err := http.Get(DirectUrl)
+func DownloadList(url, fileName string) {
+
+	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
 	}
@@ -21,7 +21,8 @@ func DownloadDirectList() {
 	if err != nil {
 		panic(err)
 	}
-	ioutil.WriteFile("direct.txt", data, 0644)
+
+	ioutil.WriteFile(fileName, data, 0644)
 }
 
 func ConvertDirectList() {
