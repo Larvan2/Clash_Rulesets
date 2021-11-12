@@ -3,31 +3,13 @@ package generators
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"os"
 	"strings"
 )
 
-func DownloadList(url, fileName string) {
-
-	resp, err := http.Get(url)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-
-	ioutil.WriteFile(fileName, data, 0644)
-}
-
 func ConvertDirectList() {
 
-	directDomainlist, err := os.Open("direct.txt")
+	directDomainlist, err := os.Open("rules/direct.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -59,7 +41,7 @@ func ConvertDirectList() {
 }
 
 func ConvertDirectTxt() {
-	directDomainlist, err := os.Open("direct.txt")
+	directDomainlist, err := os.Open("rules/direct.txt")
 
 	if err != nil {
 		fmt.Println(err)

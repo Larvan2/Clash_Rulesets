@@ -8,7 +8,7 @@ import (
 )
 
 func ConvertBlockedList() {
-	proxyDomainlist, err := os.Open("block.txt")
+	proxyDomainlist, err := os.Open("rules/proxy.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -49,7 +49,7 @@ func ConvertBlockedList() {
 }
 
 func ConvertBlockedTxt() {
-	proxyDomainList, err := os.Open("block.txt")
+	proxyDomainList, err := os.Open("rules/proxy.txt")
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -9,7 +9,7 @@ import (
 
 func ConvertDirectList_Quantumult() {
 
-	directDomainlist, err := os.Open("direct.txt")
+	directDomainlist, err := os.Open("rules/direct.txt")
 	// apple_cn, err := os.Open("apple-cn.txt")
 	if err != nil {
 		fmt.Println(err)

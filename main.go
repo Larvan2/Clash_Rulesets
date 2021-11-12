@@ -9,6 +9,7 @@ func main() {
 	proxy := "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/proxy-list.txt"
 	generators.DownloadList(direct, "direct.txt")
 	generators.DownloadList(proxy, "proxy.txt")
+
 	generators.ConvertBlockedList()
 	generators.ConvertBlockedTxt()
 	generators.ConvertDirectList()
