@@ -26,7 +26,7 @@ func ConvertDirectList_Quantumult() {
 
 	w.WriteString("[SERVER]" + "\n\n")
 	w.WriteString("[SOURCE]" + "\n" +
-		"N1klaz Rules, filter, https://github.com/N1klaz/Ruleset_CN_block/releases/latest/download/Quantumult.conf, true" + "\n\n")
+		"N1klaz Rules, filter, https://github.com/N1klaz/Clash_Rulesets/releases/latest/download/Quantumult.conf, true" + "\n\n")
 
 	w.WriteString("[REWRITE] " + "\n" + "^https?://(www.)?(g|google).cn url 302 https://www.google.com" + "\n\n")
 	w.WriteString("[TCP]" + "\n")
