@@ -38,7 +38,8 @@ func ConvertDirectList_Quantumult() {
 		"IP-CIDR,10.0.0.0/8,DIRECT" + "\n" +
 		"IP-CIDR,17.0.0.0/8,DIRECT" + "\n" +
 		"IP-CIDR,100.64.0.0/10,DIRECT" + "\n" +
-		"IP-CIDR,224.0.0.0/4,DIRECT" + "\n" + "IP-CIDR6,fe80::/10,DIRECT" + "\n")
+		"IP-CIDR,224.0.0.0/4,DIRECT" + "\n" + 
+		"IP-CIDR6,fe80::/10,DIRECT" + "\n")
 
 	w.WriteString("HOST-SUFFIX,cn,DIRECT" + "\n")
 
