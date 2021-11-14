@@ -1,4 +1,4 @@
-name: Convert domaintxt to list
+name: Build RuleSets
 on:
 #   push:
 #     branches:
