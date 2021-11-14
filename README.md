@@ -1,5 +1,5 @@
 # Clash_Rulesets
-提供了 Clash 订阅转换时使用的规则文件，数据来源：[v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat)
+提供 Clash 订阅转换时使用的规则文件，
 
 ## Proxy list:  
 - Clash订阅用的List: 
@@ -20,3 +20,6 @@
 - 分流规则：
   * https://github.com/N1klaz/Clash_Rulesets/releases/latest/download/Quantumult.conf
   * https://cdn.jsdelivr.net/gh/N1klaz/Clash_Rulesets@release/Quantumult.conf
+
+# Acknowledge
+[Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat)
