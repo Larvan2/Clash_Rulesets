@@ -1,4 +1,4 @@
-name: Convert domain txt to list
+name: Build Rule Sets
 on:
 #   push:
 #     branches:
@@ -18,17 +18,16 @@ jobs:
 
       - name: Checkout codebase
         uses: actions/checkout@v2
-
+        
       - name: Get project dependencies & run
         run: |
           go run main.go
-          
 
       - name: upload
         uses: actions/upload-artifact@v2
         with:
           path: output
- 
+
       - name: Generate release tag
         id: tag
         run: |
