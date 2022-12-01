@@ -1,0 +1,59 @@
+name: Generate RULE-SET for Premium Edition of Clash
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 22 * * *"
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**/README.md"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set variables
+        run: |
+          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+          echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+          echo "discord_cidr=https://github.com/FQrabbit/SSTap-Rule/raw/master/rules/Discord-All.rules" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Generate discord_cidr.txt file
+        run: |
+          echo "payload:" > discord_cidr.txt
+          curl -sSL ${discord_cidr} | perl -ne '/(.+\/\d+)/ && print "  - |$1|\n"' | sed "s/|/'/g" >> discord_cidr.txt
+
+      - name: Move files to publish directory
+        run: |
+          mkdir -p publish
+          cp *.txt ./publish/
+      - name: Release and upload assets
+        uses: softprops/action-gh-release@v0.1.6
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ env.TAG_NAME }}
+          draft: false
+          prerelease: false
+          files: |
+            ./publish/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Git push assets to "release" branch
+        run: |
+          cd publish || exit 1
+          git init
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b release
+          git add .
+          git commit -m "${{ env.RELEASE_NAME }}"
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git push -f origin release
+#       - name: Purge jsdelivr CDN
+#         run: |
+#           cd publish || exit 1
+#           for file in $(ls); do
+#             curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${file}"
+#           done
