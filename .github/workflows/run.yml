@@ -44,11 +44,11 @@ jobs:
 #          echo "payload:" > discord_cidr.txt
 #          curl -sSL ${discord_cidr} | perl -ne '/(.+\/\d+)/ && print "  - |$1|\n"' | sed "s/|/'/g" >> discord_cidr.txt
           
-      - name: Move files to publish directory
-        run: |
-          mkdir -p publish
-          cp discord_cidr.txt ./publish/
-          
+#      - name: Move files to publish directory
+#        run: |
+#          mkdir -p publish
+#          cp discord_cidr.txt ./publish/
+
       - name: Release and upload assets
         uses: softprops/action-gh-release@v1
         with:
